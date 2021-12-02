@@ -146,6 +146,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:maxWidth="180dp"
+                android:maxLines="1"
                 android:maxLength="8"
                 android:text="0"
                 android:textAlignment="textStart"

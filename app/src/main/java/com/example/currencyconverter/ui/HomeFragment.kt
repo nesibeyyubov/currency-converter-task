@@ -67,9 +67,10 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
                     }
                 }
                 is DataState.Error -> {
+                    Log.d("mytag", "error :${it.message}")
                     binding.apply {
                         pbHomeLoading.visibility = View.GONE
-                        llHomeContent.visibility = View.INVISIBLE
+                        llHomeContent.visibility = View.VISIBLE
                     }
                 }
                 is DataState.Loading -> {
@@ -120,7 +121,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), View.OnClickListener {
         binding.etAmount.addTextChangedListener {
             hideSoftKeyboard()
             if (currentNumber.isNotEmpty()) {
-                Log.d("mytag2", "text changed: $currentNumber")
                 homeViewModel.calculateExchangeResult(currentNumber.toDouble())
             }
         }
