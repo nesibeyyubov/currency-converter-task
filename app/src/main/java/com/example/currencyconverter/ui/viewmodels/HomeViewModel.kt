@@ -21,17 +21,21 @@ import java.lang.Exception
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
     private val currenciesRepository = CurrenciesRepository(application)
 
-    private val _currencies = MutableLiveData<DataState<List<Currency>>>()
+    private val _currencies = MutableLiveData<DataState<List<Currency>>>(DataState.Loading())
     val currencies: LiveData<DataState<List<Currency>>>
         get() = _currencies
 
-    private val _selectedFromCurrency = MutableLiveData<String>()
+    private val _selectedFromCurrency = MutableLiveData<String>("EUR")
     val selectedFromCurrency: LiveData<String>
         get() = _selectedFromCurrency
 
-    private val _selectedToCurrency = MutableLiveData<String>()
+    private val _selectedToCurrency = MutableLiveData<String>("AZN")
     val selectedToCurrency: LiveData<String>
         get() = _selectedToCurrency
+
+    private val _exchangeResult = MutableLiveData<String>()
+    val exchangeResult: LiveData<String>
+        get() = _exchangeResult
 
 
     fun setCurrencyType(currencyType: String, currencyCode: String) {
@@ -42,15 +46,32 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun swapCurrencies(){
+        val selectedFromCurrencyValue = selectedFromCurrency.value
+        _selectedFromCurrency.value = selectedToCurrency.value
+        _selectedToCurrency.value = selectedFromCurrencyValue!!
+    }
+
+    fun calculateExchangeResult(currentAmount: Double) =
+        viewModelScope.launch(Dispatchers.Default) {
+            _currencies.value?.data?.let {
+                val currency = it.find { cur -> cur.code == selectedToCurrency.value }
+                if (currency != null) {
+                    _exchangeResult.postValue((currency.rate * currentAmount).toString())
+                }
+            }
+
+        }
+
 
     fun getCurrencies() = viewModelScope.launch(Dispatchers.IO) {
         try {
             if (hasInternetConnection()) {
-                _currencies.postValue(DataState.Loading())
-                val response = currenciesRepository.getCurrencies(baseCurrency = selectedFromCurrency.value)
+                val response =
+                    currenciesRepository.getCurrencies(baseCurrency = selectedFromCurrency.value)
                 val handledResponse = handleResponse(response)
                 if (handledResponse is DataState.Success) {
-                    handledResponse.data.map { it.toEntity() }
+                    handledResponse.data!!.map { it.toEntity() }
                         .let { currenciesRepository.insertCurrencies(it) }
                     val currencies =
                         currenciesRepository.getCurrenciesFromDb().map { it.fromEntity() }
@@ -59,11 +80,10 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
                     _currencies.postValue(handledResponse)
                 }
             } else {
-                _currencies.postValue(DataState.Loading())
                 val cachedCurrencies =
                     currenciesRepository.getCurrenciesFromDb().map { it.fromEntity() }
                 if (cachedCurrencies.isNotEmpty()) {
-                    _currencies.postValue(DataState.Success(data = cachedCurrencies))
+                    _currencies.postValue(DataState.Success(successData = cachedCurrencies))
                 } else {
                     _currencies.postValue(DataState.Error(message = "No internet connection"))
                 }
@@ -82,7 +102,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     private fun handleResponse(response: Response<List<Currency>>): DataState<List<Currency>> {
         when (response.code()) {
             200, 201 -> {
-                return DataState.Success(data = response.body()!!)
+                return DataState.Success(successData = response.body()!!)
             }
             500, 404 -> {
                 return DataState.Error(message = response.message())

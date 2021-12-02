@@ -6,10 +6,11 @@
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/currencyconverter/app/src/main/res/drawable-v24/keyboard_item_pressed_bg.xml" value="0.24871794871794872" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/currencyconverter/app/src/main/res/drawable/currency_select_input_bg.xml" value="0.24871794871794872" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/currencyconverter/app/src/main/res/drawable/current_currency_bg.xml" value="0.24871794871794872" />
+        <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/currencyconverter/app/src/main/res/drawable/item_currency_bg.xml" value="0.24871794871794872" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/currencyconverter/app/src/main/res/drawable/keyboard_item_unpressed_bg.xml" value="0.24871794871794872" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/currencyconverter/app/src/main/res/layout/activity_main.xml" value="0.23645833333333333" />
-        <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/currencyconverter/app/src/main/res/layout/fragment_currency.xml" value="0.1" />
-        <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/currencyconverter/app/src/main/res/layout/fragment_home.xml" value="0.2" />
+        <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/currencyconverter/app/src/main/res/layout/fragment_currency.xml" value="0.6" />
+        <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/currencyconverter/app/src/main/res/layout/fragment_home.xml" value="0.176" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/currencyconverter/app/src/main/res/layout/item_currency.xml" value="0.36973478939157567" />
       </map>
     </option>

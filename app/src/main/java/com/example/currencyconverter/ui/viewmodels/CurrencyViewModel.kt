@@ -29,7 +29,7 @@ class CurrencyViewModel(application: Application) : AndroidViewModel(application
         try {
             _currencies.postValue(DataState.Loading())
             val cachedCurrencies = currenciesRepository.getCurrenciesFromDb().map { it.fromEntity() }
-            _currencies.postValue(DataState.Success(data = cachedCurrencies))
+            _currencies.postValue(DataState.Success(successData = cachedCurrencies))
 
         }catch (e:Exception){
             _currencies.postValue(DataState.Error(message = "Something went wrong"))

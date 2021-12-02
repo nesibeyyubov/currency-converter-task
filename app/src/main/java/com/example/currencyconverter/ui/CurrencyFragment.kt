@@ -17,7 +17,7 @@ import com.example.currencyconverter.utils.DataState
 
 class CurrencyFragment : Fragment(R.layout.fragment_currency) {
     private lateinit var binding: FragmentCurrencyBinding
-    private val homeViewModel: HomeViewModel by viewModels({requireActivity()})
+    private val homeViewModel: HomeViewModel by viewModels({ requireActivity() })
     private val currencyAdapter by lazy { CurrenciesAdapter() }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -28,15 +28,20 @@ class CurrencyFragment : Fragment(R.layout.fragment_currency) {
         homeViewModel.getCurrencies()
     }
 
+    private fun navigateBackToHome() {
+        requireActivity().supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_in_from_left, R.anim.slide_out_from_right)
+            .replace(R.id.fl_main, HomeFragment())
+            .commit()
+    }
+
     private fun setupRecyclerView() {
         currencyAdapter.OnItemClickListener = { selectedCurrency ->
             val args = arguments?.getString(Constants.KEY_CURRENCY_TYPE)
             args?.let {
                 homeViewModel.setCurrencyType(args, selectedCurrency.code)
             }
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.fl_main, HomeFragment()).commit()
-
+            navigateBackToHome()
         }
         binding.apply {
             rvCurrencies.apply {
@@ -50,7 +55,7 @@ class CurrencyFragment : Fragment(R.layout.fragment_currency) {
         homeViewModel.currencies.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success -> {
-                    currencyAdapter.setData(it.data)
+                    currencyAdapter.setData(it.data!!)
                     binding.pbCurrencies.visibility = View.GONE
                 }
                 is DataState.Error -> {
@@ -62,10 +67,7 @@ class CurrencyFragment : Fragment(R.layout.fragment_currency) {
 
     private fun setupClickListeners() {
         binding.ibBack.setOnClickListener {
-            requireActivity().supportFragmentManager.beginTransaction().replace(
-                R.id.fl_main,
-                HomeFragment()
-            ).commit()
+            navigateBackToHome()
         }
     }
 
