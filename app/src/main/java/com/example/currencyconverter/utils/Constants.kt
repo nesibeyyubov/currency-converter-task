@@ -9,4 +9,12 @@ object Constants {
     const val KEY_CURRENCY_TYPE = "selectedCurrencyType"
     const val VALUE_CURRENCY_FROM = "FROM"
     const val VALUE_CURRENCY_TO = "TO"
+
+    const val REQUEST_CODE_GET_SUCCESS = 200
+    const val REQUEST_CODE_POST_SUCCESS = 201
+    const val REQUEST_CODE_SERVER_ERROR = 500
+    const val REQUEST_CODE_NOT_FOUND_ERROR = 404
+
+    const val DEFAULT_SELECTED_FROM_CURRENCY = "EUR"
+    const val DEFAULT_SELECTED_TO_CURRENCY = "AZN"
 }

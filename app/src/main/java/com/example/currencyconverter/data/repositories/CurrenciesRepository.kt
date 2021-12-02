@@ -1,4 +1,4 @@
-package com.example.currencyconverter.data
+package com.example.currencyconverter.data.repositories
 
 import android.content.Context
 import com.example.currencyconverter.data.database.RoomDbService
